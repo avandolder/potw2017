@@ -1,3 +1,10 @@
+/* UWindsor CS POTW 2017
+ * Week 5 - Snake Word Search
+ * Adam Vandolder
+ * github.com/avandolder
+ *
+ * C++14 compliant. Should compile on g++ 5 and up with -std=c++14 flag. */
+
 #include <algorithm>
 #include <cctype>
 #include <iostream>
@@ -8,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+// Define a single node of a Trie data structure.
 struct TrieNode
 {
     typedef std::shared_ptr<TrieNode> Ptr;
@@ -27,6 +35,7 @@ private:
     std::string key;
 };
 
+// Define a basic Trie, with insertion and deletion abilities.
 class Trie
 {
     TrieNode::Ptr root;
@@ -89,7 +98,7 @@ struct CellHasher {
 
 // Iterate through the grid, performing DFS whenever a character in the
 // trie is found.
-auto find_words(auto& grid, Trie& words)
+std::vector<std::string> find_words(auto& grid, Trie& words)
 {
     std::vector<std::string> found;
 
@@ -124,7 +133,8 @@ void dfs(
 }
 
 // Find all adjacent cells that contain letters that are children of node.
-auto get_adjacent(auto& grid, auto node, auto cell)
+std::vector<std::pair<TrieNode::Ptr, std::pair<int, int>>> get_adjacent(
+    auto& grid, auto node, auto cell)
 {
     std::vector<std::pair<TrieNode::Ptr, std::pair<int, int>>> adj;
     int i = cell.first, j = cell.second;
@@ -200,7 +210,7 @@ int main()
 {
     auto grid = get_grid();
     auto words = get_words();
-    auto found = find_words(grid, words);
+    std::vector<std::string> found = find_words(grid, words);
 
     sort(found.begin(), found.end(), istrlt);
     for (auto& s : found)
